@@ -15,7 +15,7 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from sklearn.linear_model import SGDClassifier
-from nltk.corpus import stopwords 
+from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn import preprocessing
 from sklearn.metrics import precision_score
@@ -23,12 +23,8 @@ from sklearn.metrics import recall_score
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 
-newsgroups_data = fetch_20newsgroups(subset='all', shuffle=True, random_state=42)
-data = newsgroups_data.data
-labels = newsgroups_data.target
 
-###### PART 1
-#DONT CHANGE THIS FUNCTION
+
 def part1(samples):
     #extract features
     X = extract_features(samples)
@@ -39,12 +35,12 @@ def part1(samples):
 
 def extract_features(samples):
     l=[]
-    stop_words = set(stopwords.words('english')) 
+    stop_words = set(stopwords.words('english'))
     for sample in samples:
         sample = word_tokenize(sample)
         sample = [''.join(c.lower() for c in s if c!="") for s in sample if s not in string.punctuation if s.isalpha() is True]
-        f_sample = [w for w in sample if not w in stop_words] 
-           
+        f_sample = [w for w in sample if not w in stop_words]
+
         my_dict = dict(Counter(f_sample))
         l.append(my_dict)
 
@@ -70,9 +66,9 @@ def extract_features(samples):
     arr2 = tfidf_transformer.fit_transform(arr)
 
     return arr2.toarray()
-    
-##### PART 2
-#DONT CHANGE THIS FUNCTION
+
+
+
 def part2(X, n_dim):
     #Reduce Dimension
     print("Reducing dimensions ... ")
@@ -94,8 +90,7 @@ def reduce2(X, n=2):
     return X_reduced
 
 
-##### PART 3
-#DONT CHANGE THIS FUNCTION EXCEPT WHERE INSTRUCTED
+
 def get_classifier(clf_id):
     if clf_id == 1:
         clf = SGDClassifier(loss='log', penalty='l2', random_state=42, max_iter=10000, tol=1e-3, average=True)
@@ -108,10 +103,9 @@ def get_classifier(clf_id):
     print("Getting clf {} ...".format(clf.__class__.__name__))
     return clf
 
-#DONT CHANGE THIS FUNCTION
 
 def part3(X, y, clf_id):
-    #PART 3
+
     X_train, X_test, y_train, y_test = shuffle_split(X,y)
 
     #get the model
@@ -123,6 +117,8 @@ def part3(X, y, clf_id):
     print("Test example: ", X_test[0])
     print("Train label example: ",y_train[0])
     print("Test label example: ",y_test[0])
+    print()
+
 
     #train model
     print("Training classifier ...")
@@ -134,13 +130,14 @@ def part3(X, y, clf_id):
     evalute_classifier(clf, X_test, y_test)
 
 
+
 def shuffle_split(X,y):
     X, y = shuffle(X, y)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
     return X_train, X_test, y_train, y_test
 
-      
+
 def train_classifier(clf, X, y):
     assert is_classifier(clf)
     model = clf.fit(X, y)
@@ -153,16 +150,16 @@ def evalute_classifier(clf, X, y):
     precision = precision_score(y,y_pred, average = "macro")
     recall = recall_score(y,y_pred, average = "macro")
     f_measure = f1_score(y,y_pred, average = "macro")
-    
+
     print("Accuracy:", accuracy_score(y, y_pred, normalize=True))
     print("Precision:", precision)
     print("Recall:", recall)
     print("F-measure:", f_measure)
 
-    
-######
-#DONT CHANGE THIS FUNCTION
-def load_data(data):
+
+
+
+def load_data():
     print("------------Loading Data-----------")
     data = fetch_20newsgroups(subset='all', shuffle=True, random_state=42)
     print("Example data sample:\n\n", data.data[0])
@@ -171,13 +168,14 @@ def load_data(data):
     print("Number of possible labels: ", len(data.target_names))
     return data.data, data.target, data.target_names
 
-#DONT CHANGE THIS FUNCTION
+
+
 def main(model_id=None, n_dim=False):
 
     # load data
     samples, labels, label_names = load_data()
 
-    
+
     #PART 1
     print("\n------------PART 1-----------")
     X = part1(samples)
@@ -191,6 +189,8 @@ def main(model_id=None, n_dim=False):
     if model_id:
         print("\n------------PART 3-----------")
         part3(X, labels, model_id)
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -209,7 +209,7 @@ if __name__ == '__main__':
                         help="id of the classifier you want to use")
 
     args = parser.parse_args()
-    main(   
-            model_id=args.model_id, 
+    main(
+            model_id=args.model_id,
             n_dim=args.number_dim_reduce
             )
