@@ -34,4 +34,4 @@ Features reduced to 5%:
 When running the program using the SGD and the LinearSVC Classifiers by using the original space, but also by reducing the dimensions, I have noticed that there is little to almost no difference between the results obtained in the evaluation. After having written down these values, I tried running the program again and again and it has occured multiple times that the metrics indicated a higher performance of the classifiers when DR has been applied than when the original number of features was used.
 Having done some readings on dimensionality reduction and also observing my program's performance, DR definitely makes learning faster and has the benefit of increasing computational efficiency.
 
-p.s. For the bonus part I have only written another function to reduce the dimensions, using PCR. Unfortunately it became way too slow at training afterwards and I was not that successful in getting the results.
+p.s. For the bonus part I have only written another function to reduce the dimensions, using PCA. Unfortunately it became way too slow at training afterwards and I was not that successful in getting the results.
